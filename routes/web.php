@@ -13,10 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'InicioController')->name('inicio');
+
+Route::get('cep/{cep}', 'CepController')->name('cep');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('pagamento')->name('pagamento.')->group(function () {
+        Route::get('/boleto', 'PedidoController@exibirBoleto')->name('boleto');
+        Route::get('/cartao', 'PedidoController@exibirCartao')->name('cartao');
+        Route::post('/boleto/processamento', 'PedidoController@processarBoleto')->name('processamento.boleto');
+        Route::post('/cartao/processamento', 'PedidoController@processarCartao')->name('processamento.cartao');
+        Route::get('/falha', 'PedidoController@exibirFalha')->name('falha');
+        Route::get('/sucesso/{pedido}', 'PedidoController@exibirSucesso')->name('sucesso');
+    });
+});

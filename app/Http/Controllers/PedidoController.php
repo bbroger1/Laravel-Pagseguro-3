@@ -16,9 +16,32 @@ class PedidoController extends Controller
         $this->pedidoService = $pedidoService;
     }
 
-    public function index()
+    public function exibirBoleto()
     {
-        return view('pedido.pagamento');
+        return view('pagamento.boleto');
+    }
+
+    public function exibirCartao()
+    {
+        return view('pagamento.cartao');
+    }
+
+    public function processarCartao(PedidoRequest $request)
+    {
+        $dadosPedido = $request->validated();
+        $response = $this->pedidoService->efetuarPagamento($dadosPedido);
+        if ($response->clientError()) {
+            return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor verifique se todos os dados estão corretos.');
+        }
+        if ($response->serverError()) {
+            return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor tente de novo após alguns minutos.');
+        }
+
+        $pedidoCriado = $this->criarPedido($dadosPedido, $response);
+        if ($pedidoCriado->isRecusado()) {
+            return redirect()->route('pagamento.falha');
+        }
+        return redirect()->route('pagamento.sucesso', $pedidoCriado);
     }
 
     public function exibirSucesso(Pedido $pedido)

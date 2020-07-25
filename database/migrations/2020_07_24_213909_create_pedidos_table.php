@@ -19,6 +19,7 @@ class CreatePedidosTable extends Migration
             $table->uuid('uuid');
             $table->string('pagseguro_id');
             $table->string('pagseguro_status');
+            $table->string('pagseguro_type');
             $table->decimal('total', 8, 2);
             $table->integer('parcelas');
             $table->timestamps();
