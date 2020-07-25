@@ -15,6 +15,12 @@ class CreatePedidosTable extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->uuid('uuid');
+            $table->string('pagseguro_id');
+            $table->string('pagseguro_status');
+            $table->decimal('total', 8, 2);
+            $table->integer('parcelas');
             $table->timestamps();
         });
     }
