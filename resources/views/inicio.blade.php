@@ -10,7 +10,7 @@
                 <a class="btn btn-primary btn-lg" href="" role="button">
                     Boleto
                 </a>
-                <a class="btn btn-primary btn-lg" href="" role="button">
+                <a class="btn btn-primary btn-lg" href="{{route('pagamento.cartao')}}" role="button">
                     Cartão
                 </a>
             </div>

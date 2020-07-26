@@ -21,7 +21,7 @@ class CreatePedidosTable extends Migration
             $table->string('pagseguro_status');
             $table->string('pagseguro_type');
             $table->decimal('total', 8, 2);
-            $table->integer('parcelas');
+            $table->integer('parcelas')->nullable();
             $table->timestamps();
         });
     }

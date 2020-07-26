@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PedidoRequest;
+use App\Http\Requests\BoletoRequest;
+use App\Http\Requests\CartaoRequest;
 use App\Services\PedidoService;
 use App\Models\Pedido;
 
@@ -18,18 +19,18 @@ class PedidoController extends Controller
 
     public function exibirBoleto()
     {
-        return view('pagamento.boleto');
+        return view('pagamentos.boleto');
     }
 
     public function exibirCartao()
     {
-        return view('pagamento.cartao');
+        return view('pagamentos.cartao');
     }
 
-    public function processarCartao(PedidoRequest $request)
+    public function processarBoleto(BoletoRequest $request)
     {
         $dadosPedido = $request->validated();
-        $response = $this->pedidoService->efetuarPagamento($dadosPedido);
+        $response = $this->pedidoService->efetuarPagamentoBoleto($dadosPedido);
         if ($response->clientError()) {
             return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor verifique se todos os dados estão corretos.');
         }
@@ -42,6 +43,37 @@ class PedidoController extends Controller
             return redirect()->route('pagamento.falha');
         }
         return redirect()->route('pagamento.sucesso', $pedidoCriado);
+    }
+
+    public function processarCartao(CartaoRequest $request)
+    {
+        $dadosPedido = $request->validated();
+        $response = $this->pedidoService->efetuarPagamentoCartao($dadosPedido);
+        if ($response->clientError()) {
+            return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor verifique se todos os dados estão corretos.');
+        }
+        if ($response->serverError()) {
+            return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor tente de novo após alguns minutos.');
+        }
+
+        $pedidoCriado = $this->criarPedido($response);
+        if ($pedidoCriado->isRecusado()) {
+            return redirect()->route('pagamento.falha');
+        }
+        return redirect()->route('pagamento.sucesso', $pedidoCriado);
+    }
+
+    public function criarPedido($response)
+    {
+        $dadosPagseguro = [
+            'uuid' => $response['reference_id'],
+            'pagseguro_id' => substr($response['id'], 5),
+            'pagseguro_status' => $response['status'],
+            'pagseguro_type' => $response['payment_method']['type'],
+            'total' => $response['amount']['value'],
+            'parcelas' => $response['payment_method']['installments'],
+        ];
+        return auth()->user()->pedidos()->create($dadosPagseguro);
     }
 
     public function exibirSucesso(Pedido $pedido)
