@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
-    protected $fillable = ['uuid', 'pagseguro_id', 'pagseguro_status', 'total', 'parcelas'];
+    protected $fillable = ['uuid', 'pagseguro_id', 'pagseguro_status', 'pagseguro_type', 'total', 'parcelas'];
 
     public function getRouteKeyName()
     {
@@ -26,40 +26,16 @@ class Pedido extends Model
     public function setPagseguroStatusAttribute($value)
     {
         switch ($value) {
-            case 1:
-            case 'WAITING':
-                $status = 'Aguardando pagamento';
-                break;
-            case 2: 
-                $status = 'Em análise';
-                break;
-            case 3:
-            case 'PAID':
-                $status = 'Paga';
-                break;
-            case 4: 
-                $status = 'Disponível';
-                break;
-            case 5: 
-                $status = 'Em disputa';
-                break;
-            case 6:
-            case 'CANCELED':
-                $status = 'Devolvida';
-                break;
-            case 7:
-            case 'DECLINED':
-                $status = 'Cancelada';
-                break;
-            case 9:
-                $status = 'Em contestação';
-                break;
-            case 10:
-                $status = 'Em devolução';
-                break;
-            default:
-                $status = $value;
-                break;
+            case 1: case 'WAITING':     $status = 'Aguardando pagamento';   break;
+            case 2:                     $status = 'Em análise';             break;
+            case 3: case 'PAID':        $status = 'Paga';                   break;
+            case 4:                     $status = 'Disponível';             break;
+            case 5:                     $status = 'Em disputa';             break;
+            case 6: case 'CANCELED':    $status = 'Devolvida';              break;
+            case 7: case 'DECLINED':    $status = 'Cancelada';              break;
+            case 9:                     $status = 'Em contestação';         break;
+            case 10:                    $status = 'Em devolução';           break;
+            default:                    $status = $value;                   break;
         }
         $this->attributes['pagseguro_status'] = $status;
     }

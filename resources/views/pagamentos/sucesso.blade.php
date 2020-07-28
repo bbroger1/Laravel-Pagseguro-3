@@ -9,7 +9,7 @@
                 <h1 class="display-4">Sucesso!</h1>
                 <p class="lead">Seu pedido de Nº {{$pedido->uuid}} no valor de R${{$pedido->total}} foi processado com sucesso.</p>
                 <p class="lead">
-                    <a class="btn btn-primary btn-lg mt-3" href="{{route('usuario.pedidos')}}" role="button">Detalhes do pedido</a>
+                    <a class="btn btn-primary btn-lg mt-3" href="" role="button">Detalhes do pedido</a>
                 </p>
             </div>
         </div>

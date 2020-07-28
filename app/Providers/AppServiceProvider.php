@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Observers\UserObserver;
 use App\Observers\PedidoObserver;
 use App\User;
-use App\Models\Pedido;
+use App\Pedido;
 
 
 class AppServiceProvider extends ServiceProvider

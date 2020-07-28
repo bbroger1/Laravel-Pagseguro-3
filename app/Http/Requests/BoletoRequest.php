@@ -27,9 +27,11 @@ class BoletoRequest extends FormRequest
             'nome' => 'required',
             'cpf' => 'required',
             'email' => 'required',
+            'cep' => 'required',
+            'sigla' => 'required',
             'estado' => 'required',
             'cidade' => 'required',
-            'cep' => 'required',
+            'bairro' => 'required',
             'rua' => 'required',
             'numero' => 'required',
         ];

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BoletoRequest;
 use App\Http\Requests\CartaoRequest;
 use App\Services\PedidoService;
-use App\Models\Pedido;
+use App\Pedido;
 
 class PedidoController extends Controller
 {
@@ -38,7 +38,7 @@ class PedidoController extends Controller
             return back()->withInput()->with('error', 'Ocorreu um erro durante o processamento. Por favor tente de novo após alguns minutos.');
         }
 
-        $pedidoCriado = $this->criarPedido($dadosPedido, $response);
+        $pedidoCriado = $this->criarPedido($response);
         if ($pedidoCriado->isRecusado()) {
             return redirect()->route('pagamento.falha');
         }
@@ -71,19 +71,19 @@ class PedidoController extends Controller
             'pagseguro_status' => $response['status'],
             'pagseguro_type' => $response['payment_method']['type'],
             'total' => $response['amount']['value'],
-            'parcelas' => $response['payment_method']['installments'],
+            'parcelas' => $response['payment_method']['installments'] ?? null,
         ];
         return auth()->user()->pedidos()->create($dadosPagseguro);
     }
 
     public function exibirSucesso(Pedido $pedido)
     {
-        return view('pedido.sucesso', compact('pedido'));
+        return view('pagamentos.sucesso', compact('pedido'));
     }
 
     public function exibirFalha()
     {
-        return view('pedido.falha');
+        return view('pagamentos.falha');
     }
 
     public function receberStatus(Request $request)

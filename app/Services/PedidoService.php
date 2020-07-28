@@ -22,7 +22,7 @@ class PedidoService
             'payment_method' => [
                 'type' => 'BOLETO',
                 'boleto' => [
-                    'due_date' => now()->addDays(3),
+                    'due_date' => now()->addDays(3)->format('Y-m-d'),
                     'instruction_lines' => [
                         'line_1' => 'Descrição linha 1',
                         'line_2' => 'Via PagSeguro',
@@ -35,10 +35,10 @@ class PedidoService
                             'country' => 'Brasil',
                             'region' => $dadosPedido['estado'],
                             'region_code' => $dadosPedido['sigla'],
-                            'city' => $dadosPedido[''],
+                            'city' => $dadosPedido['cidade'],
                             'postal_code' => $dadosPedido['cep'],
-                            'street' => $dadosPedido[''],
-                            'number' => $dadosPedido[''],
+                            'street' => $dadosPedido['rua'],
+                            'number' => $dadosPedido['numero'],
                             'locality' => $dadosPedido['bairro'],
                         ],
                     ],
@@ -74,14 +74,14 @@ class PedidoService
         return $response;
     }
 
-    function efetuarReembolso($idPedido)
+    function efetuarReembolso($idPedido, $valorPedido)
     {
         $response = Http::withHeaders([
             'Authorization' => config('pagseguro.token'),
             'x-api-version' => config('pagseguro.api_version'),
-        ])->post("https://sandbox.api.pagseguro.com/charges/$order->pagseguro_code/cancel", [
+        ])->post(config('pagseguro.endpoint')."charges/$idPedido/cancel", [
             'amount' => [
-                'value' => '',
+                'value' => $valorPedido,
             ],
         ]);
     }
