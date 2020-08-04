@@ -1,9 +1,12 @@
 # Integração com a API Charge do Pagseguro usando Laravel 7
+Em andamento
 
 ## Compatibilidade
 * PHP >= 7.2
 * Laravel >= 7
+
 ## Instalação
+...
 
 ## Funcionalidades
 * [Cobrando com Boleto](https://dev.pagseguro.uol.com.br/v4.0/reference/cobranca-criando-uma-cobranca#cobrando-com-boleto-1)
