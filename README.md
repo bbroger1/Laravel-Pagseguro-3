@@ -3,7 +3,18 @@
 ## Compatibilidade
 * PHP >= 7.2
 * Laravel >= 7
+
 ## Instalação
+.env
+PAGSEGURO_ENV=sandbox
+PAGSEGURO_API_VERSION=4.0
+PAGSEGURO_EMAIL_SANDBOX=
+PAGSEGURO_TOKEN_SANDBOX=
+PAGSEGURO_ENDPOINT_SANDBOX=https://sandbox.api.pagseguro.com/
+PAGSEGURO_EMAIL_PRODUCTION=
+PAGSEGURO_TOKEN_PRODUCTION=
+PAGSEGURO_ENDPOINT_PRODUCTION=https://api.pagseguro.com/
+PAGSEGURO_PUBLIC_KEY=
 
 ## Funcionalidades
 * [Cobrando com Boleto](https://dev.pagseguro.uol.com.br/v4.0/reference/cobranca-criando-uma-cobranca#cobrando-com-boleto-1)

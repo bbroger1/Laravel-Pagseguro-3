@@ -146,9 +146,6 @@
 
                         <div class="row justify-content-center">
                             <div class="col-md-4 form-group">
-                                <input type="hidden" class="form-control" name="encryptedCard" id="encryptedCard"
-                                    readonly="true">
-                                <label></label>
                                 <button id="submit" name="submit" class="form-control btn btn-primary btn-lg"
                                     dusk="confirmar-button">Confirmar
                                     Pagamento</button>
