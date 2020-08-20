@@ -1,4 +1,5 @@
 # Integração com a API Charge do Pagseguro usando Laravel 7
+Em andamento
 
 ## Compatibilidade
 * PHP >= 7.2
