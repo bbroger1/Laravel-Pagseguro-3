@@ -85,6 +85,21 @@ class PedidoController extends Controller
     {
         return view('pagamentos.falha');
     }
+    
+    public function cancelamento(Order $order)
+    {
+        $response = $this->pagseguroService->efetuarReembolso($order);
+
+        if ($response->failed()) {
+            return back()->withInput()->with('erro', 'Não foi possível realizar o cancelamento do pedido no momento. Por favor tente de novo após alguns minutos.');
+        }
+
+        $order->pagseguro_status = $response['status'];
+        $order->status = 'cancelado';
+        $order->save();
+
+        return back();
+    }
 
     public function receberStatus(Request $request)
     {
